@@ -57,10 +57,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0
+CMAKE_SOURCE_DIR = /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build
+CMAKE_BINARY_DIR = /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -142,9 +142,9 @@ install/strip/fast: preinstall/fast
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build//CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build//CMakeFiles/progress.marks
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -184,53 +184,29 @@ arm_foc/fast:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/build
 .PHONY : arm_foc/fast
 
-src/algorithms/kinematic/6dof_kinematic.o: src/algorithms/kinematic/6dof_kinematic.cpp.o
-.PHONY : src/algorithms/kinematic/6dof_kinematic.o
+src/algorithms/kinematic/DmKinematics.o: src/algorithms/kinematic/DmKinematics.cpp.o
+.PHONY : src/algorithms/kinematic/DmKinematics.o
 
 # target to build an object file
-src/algorithms/kinematic/6dof_kinematic.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o
-.PHONY : src/algorithms/kinematic/6dof_kinematic.cpp.o
+src/algorithms/kinematic/DmKinematics.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o
+.PHONY : src/algorithms/kinematic/DmKinematics.cpp.o
 
-src/algorithms/kinematic/6dof_kinematic.i: src/algorithms/kinematic/6dof_kinematic.cpp.i
-.PHONY : src/algorithms/kinematic/6dof_kinematic.i
-
-# target to preprocess a source file
-src/algorithms/kinematic/6dof_kinematic.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.i
-.PHONY : src/algorithms/kinematic/6dof_kinematic.cpp.i
-
-src/algorithms/kinematic/6dof_kinematic.s: src/algorithms/kinematic/6dof_kinematic.cpp.s
-.PHONY : src/algorithms/kinematic/6dof_kinematic.s
-
-# target to generate assembly for a file
-src/algorithms/kinematic/6dof_kinematic.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.s
-.PHONY : src/algorithms/kinematic/6dof_kinematic.cpp.s
-
-src/algorithms/kinematic/BerkeleyKinematics.o: src/algorithms/kinematic/BerkeleyKinematics.cpp.o
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.o
-
-# target to build an object file
-src/algorithms/kinematic/BerkeleyKinematics.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.cpp.o
-
-src/algorithms/kinematic/BerkeleyKinematics.i: src/algorithms/kinematic/BerkeleyKinematics.cpp.i
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.i
+src/algorithms/kinematic/DmKinematics.i: src/algorithms/kinematic/DmKinematics.cpp.i
+.PHONY : src/algorithms/kinematic/DmKinematics.i
 
 # target to preprocess a source file
-src/algorithms/kinematic/BerkeleyKinematics.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.i
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.cpp.i
+src/algorithms/kinematic/DmKinematics.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.i
+.PHONY : src/algorithms/kinematic/DmKinematics.cpp.i
 
-src/algorithms/kinematic/BerkeleyKinematics.s: src/algorithms/kinematic/BerkeleyKinematics.cpp.s
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.s
+src/algorithms/kinematic/DmKinematics.s: src/algorithms/kinematic/DmKinematics.cpp.s
+.PHONY : src/algorithms/kinematic/DmKinematics.s
 
 # target to generate assembly for a file
-src/algorithms/kinematic/BerkeleyKinematics.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.s
-.PHONY : src/algorithms/kinematic/BerkeleyKinematics.cpp.s
+src/algorithms/kinematic/DmKinematics.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.s
+.PHONY : src/algorithms/kinematic/DmKinematics.cpp.s
 
 src/ctrl_step/ctrl_step.o: src/ctrl_step/ctrl_step.cpp.o
 .PHONY : src/ctrl_step/ctrl_step.o
@@ -304,54 +280,6 @@ src/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/main.cpp.s
 .PHONY : src/main.cpp.s
 
-src/motor_controller.o: src/motor_controller.cpp.o
-.PHONY : src/motor_controller.o
-
-# target to build an object file
-src/motor_controller.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o
-.PHONY : src/motor_controller.cpp.o
-
-src/motor_controller.i: src/motor_controller.cpp.i
-.PHONY : src/motor_controller.i
-
-# target to preprocess a source file
-src/motor_controller.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/motor_controller.cpp.i
-.PHONY : src/motor_controller.cpp.i
-
-src/motor_controller.s: src/motor_controller.cpp.s
-.PHONY : src/motor_controller.s
-
-# target to generate assembly for a file
-src/motor_controller.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/motor_controller.cpp.s
-.PHONY : src/motor_controller.cpp.s
-
-src/socketcan.o: src/socketcan.cpp.o
-.PHONY : src/socketcan.o
-
-# target to build an object file
-src/socketcan.cpp.o:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/socketcan.cpp.o
-.PHONY : src/socketcan.cpp.o
-
-src/socketcan.i: src/socketcan.cpp.i
-.PHONY : src/socketcan.i
-
-# target to preprocess a source file
-src/socketcan.cpp.i:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/socketcan.cpp.i
-.PHONY : src/socketcan.cpp.i
-
-src/socketcan.s: src/socketcan.cpp.s
-.PHONY : src/socketcan.s
-
-# target to generate assembly for a file
-src/socketcan.cpp.s:
-	$(MAKE) $(MAKESILENT) -f CMakeFiles/arm_foc.dir/build.make CMakeFiles/arm_foc.dir/src/socketcan.cpp.s
-.PHONY : src/socketcan.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -366,12 +294,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... test"
 	@echo "... arm_foc"
-	@echo "... src/algorithms/kinematic/6dof_kinematic.o"
-	@echo "... src/algorithms/kinematic/6dof_kinematic.i"
-	@echo "... src/algorithms/kinematic/6dof_kinematic.s"
-	@echo "... src/algorithms/kinematic/BerkeleyKinematics.o"
-	@echo "... src/algorithms/kinematic/BerkeleyKinematics.i"
-	@echo "... src/algorithms/kinematic/BerkeleyKinematics.s"
+	@echo "... src/algorithms/kinematic/DmKinematics.o"
+	@echo "... src/algorithms/kinematic/DmKinematics.i"
+	@echo "... src/algorithms/kinematic/DmKinematics.s"
 	@echo "... src/ctrl_step/ctrl_step.o"
 	@echo "... src/ctrl_step/ctrl_step.i"
 	@echo "... src/ctrl_step/ctrl_step.s"
@@ -381,12 +306,6 @@ help:
 	@echo "... src/main.o"
 	@echo "... src/main.i"
 	@echo "... src/main.s"
-	@echo "... src/motor_controller.o"
-	@echo "... src/motor_controller.i"
-	@echo "... src/motor_controller.s"
-	@echo "... src/socketcan.o"
-	@echo "... src/socketcan.i"
-	@echo "... src/socketcan.s"
 .PHONY : help
 
 

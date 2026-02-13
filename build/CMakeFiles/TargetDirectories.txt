@@ -1,8 +1,8 @@
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/arm_foc.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/test.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/edit_cache.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/rebuild_cache.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/list_install_components.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/install.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/install/local.dir
-/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/install/strip.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/arm_foc.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/test.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/edit_cache.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/rebuild_cache.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/list_install_components.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/install.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/install/local.dir
+/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/install/strip.dir

@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "src/**",
-                "/usr/include/**"
+                "/usr/include/**",
+                "src/u2can/**"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/gcc",

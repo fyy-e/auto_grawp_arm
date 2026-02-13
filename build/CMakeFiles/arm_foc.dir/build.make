@@ -53,10 +53,10 @@ RM = /usr/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0
+CMAKE_SOURCE_DIR = /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build
+CMAKE_BINARY_DIR = /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/arm_foc.dir/depend.make
@@ -69,127 +69,79 @@ include CMakeFiles/arm_foc.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/arm_foc.dir/flags.make
 
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o: CMakeFiles/arm_foc.dir/flags.make
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o: ../src/algorithms/kinematic/6dof_kinematic.cpp
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o -MF CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o.d -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/6dof_kinematic.cpp
+CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o: CMakeFiles/arm_foc.dir/flags.make
+CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o: ../src/algorithms/kinematic/DmKinematics.cpp
+CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o -MF CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o.d -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o -c /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/algorithms/kinematic/DmKinematics.cpp
 
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/6dof_kinematic.cpp > CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.i
+CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/algorithms/kinematic/DmKinematics.cpp > CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.i
 
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/6dof_kinematic.cpp -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.s
-
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o: CMakeFiles/arm_foc.dir/flags.make
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o: ../src/algorithms/kinematic/BerkeleyKinematics.cpp
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o -MF CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o.d -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/BerkeleyKinematics.cpp
-
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/BerkeleyKinematics.cpp > CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.i
-
-CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/algorithms/kinematic/BerkeleyKinematics.cpp -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.s
+CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/algorithms/kinematic/DmKinematics.cpp -o CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.s
 
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o: CMakeFiles/arm_foc.dir/flags.make
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o: ../src/ctrl_step/ctrl_step.cpp
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o -MF CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o.d -o CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/ctrl_step/ctrl_step.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o -MF CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o.d -o CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o -c /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/ctrl_step/ctrl_step.cpp
 
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/ctrl_step/ctrl_step.cpp > CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/ctrl_step/ctrl_step.cpp > CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.i
 
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/ctrl_step/ctrl_step.cpp -o CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/ctrl_step/ctrl_step.cpp -o CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.s
 
 CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o: CMakeFiles/arm_foc.dir/flags.make
 CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o: ../src/dummy_robot.cpp
 CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o -MF CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o.d -o CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/dummy_robot.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o -MF CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o.d -o CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o -c /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/dummy_robot.cpp
 
 CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/dummy_robot.cpp > CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/dummy_robot.cpp > CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.i
 
 CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/dummy_robot.cpp -o CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/dummy_robot.cpp -o CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.s
 
 CMakeFiles/arm_foc.dir/src/main.cpp.o: CMakeFiles/arm_foc.dir/flags.make
 CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp
 CMakeFiles/arm_foc.dir/src/main.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/arm_foc.dir/src/main.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/main.cpp.o -MF CMakeFiles/arm_foc.dir/src/main.cpp.o.d -o CMakeFiles/arm_foc.dir/src/main.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/arm_foc.dir/src/main.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/main.cpp.o -MF CMakeFiles/arm_foc.dir/src/main.cpp.o.d -o CMakeFiles/arm_foc.dir/src/main.cpp.o -c /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/main.cpp
 
 CMakeFiles/arm_foc.dir/src/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/main.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/main.cpp > CMakeFiles/arm_foc.dir/src/main.cpp.i
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/main.cpp > CMakeFiles/arm_foc.dir/src/main.cpp.i
 
 CMakeFiles/arm_foc.dir/src/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/main.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/main.cpp -o CMakeFiles/arm_foc.dir/src/main.cpp.s
-
-CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o: CMakeFiles/arm_foc.dir/flags.make
-CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o: ../src/motor_controller.cpp
-CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o -MF CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o.d -o CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/motor_controller.cpp
-
-CMakeFiles/arm_foc.dir/src/motor_controller.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/motor_controller.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/motor_controller.cpp > CMakeFiles/arm_foc.dir/src/motor_controller.cpp.i
-
-CMakeFiles/arm_foc.dir/src/motor_controller.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/motor_controller.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/motor_controller.cpp -o CMakeFiles/arm_foc.dir/src/motor_controller.cpp.s
-
-CMakeFiles/arm_foc.dir/src/socketcan.cpp.o: CMakeFiles/arm_foc.dir/flags.make
-CMakeFiles/arm_foc.dir/src/socketcan.cpp.o: ../src/socketcan.cpp
-CMakeFiles/arm_foc.dir/src/socketcan.cpp.o: CMakeFiles/arm_foc.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/arm_foc.dir/src/socketcan.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/arm_foc.dir/src/socketcan.cpp.o -MF CMakeFiles/arm_foc.dir/src/socketcan.cpp.o.d -o CMakeFiles/arm_foc.dir/src/socketcan.cpp.o -c /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/socketcan.cpp
-
-CMakeFiles/arm_foc.dir/src/socketcan.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/arm_foc.dir/src/socketcan.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/socketcan.cpp > CMakeFiles/arm_foc.dir/src/socketcan.cpp.i
-
-CMakeFiles/arm_foc.dir/src/socketcan.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/arm_foc.dir/src/socketcan.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/src/socketcan.cpp -o CMakeFiles/arm_foc.dir/src/socketcan.cpp.s
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/main.cpp -o CMakeFiles/arm_foc.dir/src/main.cpp.s
 
 # Object files for target arm_foc
 arm_foc_OBJECTS = \
-"CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o" \
-"CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o" \
+"CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o" \
 "CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o" \
 "CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o" \
-"CMakeFiles/arm_foc.dir/src/main.cpp.o" \
-"CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o" \
-"CMakeFiles/arm_foc.dir/src/socketcan.cpp.o"
+"CMakeFiles/arm_foc.dir/src/main.cpp.o"
 
 # External object files for target arm_foc
 arm_foc_EXTERNAL_OBJECTS =
 
-bin/arm_foc: CMakeFiles/arm_foc.dir/src/algorithms/kinematic/6dof_kinematic.cpp.o
-bin/arm_foc: CMakeFiles/arm_foc.dir/src/algorithms/kinematic/BerkeleyKinematics.cpp.o
+bin/arm_foc: CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o
 bin/arm_foc: CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o
 bin/arm_foc: CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o
 bin/arm_foc: CMakeFiles/arm_foc.dir/src/main.cpp.o
-bin/arm_foc: CMakeFiles/arm_foc.dir/src/motor_controller.cpp.o
-bin/arm_foc: CMakeFiles/arm_foc.dir/src/socketcan.cpp.o
 bin/arm_foc: CMakeFiles/arm_foc.dir/build.make
 bin/arm_foc: CMakeFiles/arm_foc.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Linking CXX executable bin/arm_foc"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable bin/arm_foc"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/arm_foc.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -201,6 +153,6 @@ CMakeFiles/arm_foc.dir/clean:
 .PHONY : CMakeFiles/arm_foc.dir/clean
 
 CMakeFiles/arm_foc.dir/depend:
-	cd /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0 /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0 /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build /home/fyy/桌面/arm_motionController_ws/change_dummy_v4.0/build/CMakeFiles/arm_foc.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0 /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0 /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/build/CMakeFiles/arm_foc.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/arm_foc.dir/depend
 

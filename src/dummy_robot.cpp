@@ -1,9 +1,10 @@
 #include "dummy_robot.h"
 #include <iostream>
 #include <algorithm>
+#include "ctrl_step.h"
 
-DummyHand::DummyHand(SocketCan* _hcan, uint8_t _id) :
-    nodeID(_id), hcan(_hcan)
+DummyHand::DummyHand(SerialPort::SharedPtr serial, uint8_t _id) :
+    nodeID(_id), serial_(serial)
 {
 }
 
@@ -20,33 +21,32 @@ void DummyHand::SetEnable(bool _enable)
 {
 }
 
-DummyRobot::DummyRobot(SocketCan* _hcan, const std::string& urdf_path) :
-    hcan(_hcan)
+DummyRobot::DummyRobot(std::string port_name, uint32_t baudrate, const std::string& urdf_path)
 {
+    this->serial_ = std::make_shared<SerialPort>(port_name, baudrate);
     // 初始化关节电机（限位值使用弧度）
-    motorJ[ALL] = new CtrlStepMotor(_hcan, 0, false, 15, -M_PI, M_PI);
-    motorJ[1] = new CtrlStepMotor(_hcan, 1, false, 15, -M_PI, M_PI);
-    motorJ[2] = new CtrlStepMotor(_hcan, 2, true, 15, -2, 2);
-    motorJ[3] = new CtrlStepMotor(_hcan, 3, false, 15, -M_PI, M_PI);
-    motorJ[4] = new CtrlStepMotor(_hcan, 4, true, 15, -2, 2);
-    motorJ[5] = new CtrlStepMotor(_hcan, 5, false, 15, -M_PI, M_PI);
-    motorJ[6] = new CtrlStepMotor(_hcan, 6, false, 15, -M_PI, M_PI);
-    hand = new DummyHand(_hcan, 7);
+    motorJ[1] = new CtrlStepMotor(damiao::DM4340_48V, 0x01, 0x11);
+    motorJ[2] = new CtrlStepMotor(damiao::DM4340_48V, 0x02, 0x12);
+    motorJ[3] = new CtrlStepMotor(damiao::DM4340_48V, 0x03, 0x13);
+    motorJ[4] = new CtrlStepMotor(damiao::DM4340_48V, 0x04, 0x14);
+    motorJ[5] = new CtrlStepMotor(damiao::DM4340_48V, 0x05, 0x15);
+    motorJ[6] = new CtrlStepMotor(damiao::DM4340_48V, 0x06, 0x16);
+    hand = new DummyHand(serial_, 7);
 
     // 初始化Pinocchio运动学
     try {
-        kinematics = new BerkeleyKinematics(urdf_path);
+        kinematics = new DmKinematics(urdf_path);
         dof = kinematics->getJointNum();
         std::cout << "[DummyRobot] Pinocchio 初始化成功，DOF=" << dof << std::endl;
     } catch (const std::exception& e) {
         std::cerr << "[DummyRobot] 运动学初始化失败: " << e.what() << std::endl;
         kinematics = nullptr;
-        dof = 5;
+        dof = 6;
     }
 
-    currentJoints = REST_POSE;
-    targetJoints = REST_POSE;
-    initPose = REST_POSE;
+    currentJoints = INIT_POSE;
+    targetJoints = INIT_POSE;
+    initPose = INIT_POSE;
 }
 
 DummyRobot::~DummyRobot()
@@ -63,14 +63,6 @@ void DummyRobot::Init()
     SetJointSpeed(DEFAULT_JOINT_SPEED);
 }
 
-void DummyRobot::Reboot()
-{
-    for(int i = 1; i <= 6; i++){
-        motorJ[i]->Reboot();
-    }
-    osDelay(500);
-}
-
 float DummyRobot::AbsMaxOf6(const Joint6D_t& joints, uint8_t& index) const
 {
     float max_val = -1.0f;
@@ -82,7 +74,8 @@ float DummyRobot::AbsMaxOf6(const Joint6D_t& joints, uint8_t& index) const
     }
     return max_val;
 }
-
+//     if (_val > limit_param.Q_MAX) _val = limit_param.Q_MAX;
+//     if (_val < -limit_param.Q_MAX) _val = -limit_param.Q_MAX;
 bool DummyRobot::MoveJ(float j1_rad, float j2_rad, float j3_rad, 
                        float j4_rad, float j5_rad, float j6_rad)
 {
@@ -90,9 +83,9 @@ bool DummyRobot::MoveJ(float j1_rad, float j2_rad, float j3_rad,
     bool valid = true;
 
     // 检查关节限位（弧度）
-    for (int j = 1; j <= 6; j++) {
-        if (target.j[j-1] > motorJ[j]->angleLimitMax || 
-            target.j[j-1] < motorJ[j]->angleLimitMin) {
+    for (int j = 1; j <= 6; j++){
+        if (target.j[j-1] > motorJ[j]->limit_param.Q_MAX || 
+            target.j[j-1] < -motorJ[j]->limit_param.Q_MAX) {
             valid = false;
             std::cerr << "[MoveJ] 关节 " << j << " 超出限位: " 
                       << target.j[j-1] << " rad" << std::endl;
@@ -132,6 +125,7 @@ void DummyRobot::MoveJoints(const Joint6D_t& joints_rad)
         float speed_rad_per_sec = jointSpeed * jointSpeedRatio;
         
         motorJ[j]->SetAngleWithVelocityLimit(target_rad, speed_rad_per_sec);
+        motorJ[j]->target_pos = target_rad;
     }
 }
 
@@ -147,8 +141,8 @@ void DummyRobot::MoveJointsWithSpeed(const Joint6D_t& joints_rad,
 bool DummyRobot::MoveL(float x_m, float y_m, float z_m, 
                        float roll_rad, float pitch_rad, float yaw_rad)
 {
-    if (!kinematics) {
-        std::cerr << "[MoveL] 运动学未初始化" << std::endl;
+    if (!kinematics || dof < 6) {   // 6轴臂必须满自由度
+        std::cerr << "[MoveL] 需要6自由度运动学模型" << std::endl;
         return false;
     }
 
@@ -160,21 +154,26 @@ bool DummyRobot::MoveL(float x_m, float y_m, float z_m,
         q_init[i] = currentJoints.j[i];
     }
     
-    bool success = kinematics->inverse(target_pos, target_rpy, q_init, q_out);
+    // 关键修改：启用姿态约束，且姿态权重不宜过大（推荐0.5~1.0）
+    bool success = kinematics->inverse(target_pos, target_rpy, q_init, q_out,
+                                       true, 1.0, 0.8);
     
     if (!success) {
         std::cerr << "[MoveL] IK 求解失败" << std::endl;
         return false;
     }
-    
-    float j1 = q_out[0];
-    float j2 = (dof > 1) ? q_out[1] : 0.0f;
-    float j3 = (dof > 2) ? q_out[2] : 0.0f;
-    float j4 = (dof > 3) ? q_out[3] : 0.0f;
-    float j5 = (dof > 4) ? q_out[4] : 0.0f;
-    float j6 = (dof > 5) ? q_out[5] : yaw_rad;
-    
-    return MoveJ(j1, j2, j3, j4, j5, j6);
+
+    // 额外检查：逆解结果是否在电机限位内
+    for (int j = 1; j <= 6; j++) {
+        if (q_out[j-1] > motorJ[j]->limit_param.Q_MAX || 
+            q_out[j-1] < -motorJ[j]->limit_param.Q_MAX) {
+            std::cerr << "[MoveL] 逆解结果超出关节" << j << "限位" << std::endl;
+            return false;
+        }
+    }
+
+    // 直接调用关节运动（MoveJ内部会检查限位，但我们已经提前检查了）
+    return MoveJ(q_out[0], q_out[1], q_out[2], q_out[3], q_out[4], q_out[5]);
 }
 
 void DummyRobot::UpdateJointAngles()
@@ -188,7 +187,7 @@ void DummyRobot::UpdateJointAnglesCallback()
 {
     for (int i = 1; i <= 6; i++) {
         // 直接读取弧度值（假设电机返回弧度）
-        currentJoints.j[i-1] = motorJ[i]->angle + initPose.j[i-1];
+        currentJoints.j[i-1] = motorJ[i]->position + initPose.j[i-1];
         
         if (motorJ[i]->state == CtrlStepMotor::FINISH)
             jointsStateFlag |= (1 << i);
@@ -241,10 +240,6 @@ void DummyRobot::CalibrateHomeOffset()
         motorJ[i]->ApplyPositionAsHome();
         osDelay(100);
     }
-    for(int i = 1; i <= 6; i++){
-        motorJ[i]->save_settings_to_flash();
-        osDelay(100);
-    }
     osDelay(500);
 }
 
@@ -274,10 +269,10 @@ void DummyRobot::Resting()
     SetJointSpeed(lastSpeed);
 }
 
-void DummyRobot::SetEnable(bool _enable)
+void DummyRobot::SetEnable(bool _enable,damiao::Control_Mode mode)
 {
     for(int i = 1; i <= 6; i++){
-        motorJ[i]->SetEnable(_enable);
+        motorJ[i]->SetEnable(_enable,mode);
     }
     isEnabled = _enable;
 }
@@ -297,10 +292,7 @@ bool DummyRobot::IsEnabled()
 
 void DummyRobot::GetOffsets()
 {
-    for(int i = 1; i <= 6; i++){
-        float offset = motorJ[i]->get_offset();  // 假设返回弧度
-        std::cout << i << "：offset: " << offset << " rad" << std::endl;
-    }
+
 }
 
 void DummyRobot::SetCommandMode(uint32_t _mode)

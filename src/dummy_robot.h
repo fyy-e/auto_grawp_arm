@@ -2,10 +2,11 @@
 #define REF_STM32F4_FW_DUMMY_ROBOT_H
 
 #include "ctrl_step/ctrl_step.h"
-#include "BerkeleyKinematics.h"
+#include "DmKinematics.h"
 #include <string>
 #include <cmath>
-
+#include "src/u2can/SerialPort.h"
+#include "src/u2can/damiao.h"
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -18,12 +19,12 @@ public:
     uint8_t nodeID = 7;
     float maxCurrent = 0.7;
 
-    DummyHand(SocketCan* _hcan, uint8_t _id);
+    DummyHand(SerialPort::SharedPtr serial = nullptr, uint8_t _id = 0);
     void SetAngle(float _angle_rad);  // 弧度
     void SetMaxCurrent(float _val);
     void SetEnable(bool _enable);
 private:
-    SocketCan* hcan;
+    SerialPort::SharedPtr serial_;
     float minAngle = 0;    // 弧度
     float maxAngle = 0.785398f;  // 45度 = π/4 弧度
 };
@@ -69,10 +70,11 @@ public:
     };
 
     // 默认参数（弧度制）
-    const Joint6D_t REST_POSE = {0.0f, 0.0f, 0.0f, 0.0f, 0.0f, 0.0f};  // 90° = π/2
+    const Joint6D_t INIT_POSE = {0.0f, 0.0, 0.0, 0.0f, 0.0f, 0.0f};  // 90° = π/2
+    const Joint6D_t REST_POSE = {0.0f, 0.785f, 0.785f, 0.0f, 0.0f, 0.0f};  // 90° = π/2
     
     // 速度：rad/s
-    const float DEFAULT_JOINT_SPEED = 0.524f;  // 30°/s
+    const float DEFAULT_JOINT_SPEED = 10.0f;  // 30°/s
     
     // 加速度：rad/s²
     const Joint6D_t DEFAULT_JOINT_ACCELERATION_BASES = {2.618f, 1.745f, 3.490f, 3.490f, 3.490f, 3.490f};
@@ -80,7 +82,7 @@ public:
     const float DEFAULT_JOINT_ACCELERATION_HIGH = 1.745f;  // 100°/s²
     const CommandMode DEFAULT_COMMAND_MODE = COMMAND_TARGET_POINT_INTERRUPTABLE;
 
-    explicit DummyRobot(SocketCan* _hcan, const std::string& urdf_path);
+    explicit DummyRobot(std::string port_name, uint32_t baudrate, const std::string& urdf_path);
     ~DummyRobot();
 
     void Init();
@@ -104,7 +106,7 @@ public:
     void CalibrateHomeOffset();
     void Homing();
     void Resting();
-    void SetEnable(bool _enable);
+    void SetEnable(bool _enable,damiao::Control_Mode mode);
     void SetCommandMode(uint32_t _mode);
     
     bool IsMoving();
@@ -117,8 +119,8 @@ public:
     int GetDof() const { return dof; }
 
 private:
-    SocketCan* hcan;
-    BerkeleyKinematics* kinematics;
+    SerialPort::SharedPtr serial_;
+    DmKinematics* kinematics;
     int dof;
     
     Joint6D_t currentJoints;

@@ -2216,7 +2216,13 @@ CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o: ../src/algor
   /usr/local/include/pinocchio/algorithm/jacobian.txx \
   /usr/local/include/pinocchio/algorithm/frames.txx \
   /usr/local/include/pinocchio/math/rpy.hpp \
-  /usr/local/include/pinocchio/math/rpy.hxx
+  /usr/local/include/pinocchio/math/rpy.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.hpp \
+  /usr/local/include/pinocchio/algorithm/rnea.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.txx \
+  /usr/local/include/pinocchio/algorithm/crba.hpp \
+  /usr/local/include/pinocchio/algorithm/crba.hxx \
+  /usr/local/include/pinocchio/algorithm/crba.txx
 
 CMakeFiles/arm_foc.dir/src/ctrl_step/ctrl_step.cpp.o: ../src/ctrl_step/ctrl_step.cpp \
   /usr/include/stdc-predef.h \
@@ -4790,6 +4796,12 @@ CMakeFiles/arm_foc.dir/src/dummy_robot.cpp.o: ../src/dummy_robot.cpp \
   /usr/local/include/pinocchio/algorithm/frames.txx \
   /usr/local/include/pinocchio/math/rpy.hpp \
   /usr/local/include/pinocchio/math/rpy.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.hpp \
+  /usr/local/include/pinocchio/algorithm/rnea.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.txx \
+  /usr/local/include/pinocchio/algorithm/crba.hpp \
+  /usr/local/include/pinocchio/algorithm/crba.hxx \
+  /usr/local/include/pinocchio/algorithm/crba.txx \
   ../src/u2can/SerialPort.h \
   ../src/ctrl_step/ctrl_step.h
 
@@ -7059,6 +7071,12 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp \
   /usr/local/include/pinocchio/algorithm/frames.txx \
   /usr/local/include/pinocchio/math/rpy.hpp \
   /usr/local/include/pinocchio/math/rpy.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.hpp \
+  /usr/local/include/pinocchio/algorithm/rnea.hxx \
+  /usr/local/include/pinocchio/algorithm/rnea.txx \
+  /usr/local/include/pinocchio/algorithm/crba.hpp \
+  /usr/local/include/pinocchio/algorithm/crba.hxx \
+  /usr/local/include/pinocchio/algorithm/crba.txx \
   ../src/u2can/SerialPort.h
 
 
@@ -7111,6 +7129,12 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/x86_64-linux-gnu/bits/termios.h:
 
 ../src/ctrl_step/ctrl_step.h:
+
+/usr/local/include/pinocchio/algorithm/crba.hxx:
+
+/usr/local/include/pinocchio/algorithm/rnea.txx:
+
+/usr/local/include/pinocchio/algorithm/rnea.hxx:
 
 /usr/local/include/pinocchio/math/rpy.hpp:
 
@@ -7259,6 +7283,8 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/boost/fusion/algorithm/query/find.hpp:
 
 /usr/include/boost/fusion/algorithm/query/detail/count.hpp:
+
+/usr/local/include/pinocchio/algorithm/crba.txx:
 
 /usr/include/boost/fusion/algorithm/query/count_if.hpp:
 
@@ -8271,6 +8297,8 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/boost/type_traits/has_nothrow_assign.hpp:
 
 /usr/include/boost/type_traits/has_not_equal_to.hpp:
+
+/usr/local/include/pinocchio/algorithm/crba.hpp:
 
 /usr/include/boost/preprocessor/repetition/enum_shifted.hpp:
 
@@ -10167,6 +10195,8 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: ../src/main.cpp \
 /usr/include/boost/type_traits/detail/config.hpp:
 
 /usr/include/boost/concept/assert.hpp:
+
+/usr/local/include/pinocchio/algorithm/rnea.hpp:
 
 /usr/include/boost/limits.hpp:
 

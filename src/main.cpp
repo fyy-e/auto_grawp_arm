@@ -82,6 +82,8 @@ int main() {
     std::cout << "初始化机械臂..." << std::endl;
     robot.Init();
     robot.SetEnable(true,damiao::POS_VEL_MODE);
+    robot.hand->SetEnable(true);
+    // robot.hand->CalibrateHomeOffset();
     std::this_thread::sleep_for(std::chrono::milliseconds(100));
     
     // 4. 启动角度更新线程
@@ -110,8 +112,8 @@ int main() {
             std::cout << "运动指令已下发（目标：弧度）" << std::endl;
             
             // 驱动关节运动（使用getter获取targetJoints）
-            robot.MoveJoints(robot.GetTargetJoints());
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            // robot.MoveJoints(robot.GetTargetJoints());
+            // std::this_thread::sleep_for(std::chrono::milliseconds(50));
             
             // 等待运动完成
             while (robot.IsMoving()) {
@@ -119,6 +121,7 @@ int main() {
                 PrintJointAngles(robot.GetCurrentJoints());
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }
+            robot.hand->SetAngle(2.0f);  // 手爪半开
             std::cout << "运动完成!" << std::endl;
             PrintJointAngles(robot.GetCurrentJoints());
         } else {
@@ -137,8 +140,8 @@ int main() {
             std::cout << "运动指令已下发（目标：弧度）" << std::endl;
             
             // 驱动关节运动（使用getter获取targetJoints）
-            robot.MoveJoints(robot.GetTargetJoints());
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            // robot.MoveJoints(robot.GetTargetJoints());
+            // std::this_thread::sleep_for(std::chrono::milliseconds(50));
             
             // 等待运动完成
             while (robot.IsMoving()) {
@@ -147,15 +150,14 @@ int main() {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
             }
             std::cout << "运动完成!" << std::endl;
+            robot.hand->SetAngle(0.0f);  // 手爪半开
             PrintJointAngles(robot.GetCurrentJoints());
         } else {
             std::cout << "运动指令非法（可能超出限位）!" << std::endl;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        robot.Resting();
+        robot.Homing();
         // 持续打印状态（用于调试）
-
-
         std::cout << "\n进入监控模式（按Ctrl+C退出）..." << std::endl;
         while(g_thread_running) {
             PrintJointAngles(robot.GetCurrentJoints());

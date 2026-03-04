@@ -153,3 +153,15 @@ bool DmKinematics::inverse(const Eigen::Vector3d& target_pos,
     std::cerr << "  实际姿态误差: " << ori_err * 180 / M_PI << " deg" << std::endl;
     return false;
 }
+Eigen::VectorXd DmKinematics::computeGravityTorque(const Eigen::VectorXd& q) {
+    // 1. 零速度、零加速度
+    Eigen::VectorXd dq = Eigen::VectorXd::Zero(model.nv);
+    Eigen::VectorXd ddq = Eigen::VectorXd::Zero(model.nv);
+
+    // 2. 调用递归牛顿欧拉算法，重力向量默认 (0,0,-9.81)
+    //    Pinocchio 会自动从 model.gravity 读取，默认 -9.81 沿 Z 轴
+    pinocchio::rnea(model, data, q, dq, ddq);
+
+    // 3. 返回广义重力力矩
+    return data.tau;   // data.tau 是 rnea 的结果，仅包含重力和科氏力，此处 dq=0，只有重力项
+}

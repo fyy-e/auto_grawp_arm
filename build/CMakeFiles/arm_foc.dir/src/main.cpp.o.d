@@ -2128,4 +2128,10 @@ CMakeFiles/arm_foc.dir/src/main.cpp.o: \
  /usr/local/include/pinocchio/algorithm/frames.txx \
  /usr/local/include/pinocchio/math/rpy.hpp \
  /usr/local/include/pinocchio/math/rpy.hxx \
+ /usr/local/include/pinocchio/algorithm/rnea.hpp \
+ /usr/local/include/pinocchio/algorithm/rnea.hxx \
+ /usr/local/include/pinocchio/algorithm/rnea.txx \
+ /usr/local/include/pinocchio/algorithm/crba.hpp \
+ /usr/local/include/pinocchio/algorithm/crba.hxx \
+ /usr/local/include/pinocchio/algorithm/crba.txx \
  /home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/./src/u2can/SerialPort.h

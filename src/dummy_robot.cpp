@@ -2,35 +2,90 @@
 #include <iostream>
 #include <algorithm>
 #include "ctrl_step.h"
-
 DummyHand::DummyHand(SerialPort::SharedPtr serial, uint8_t _id) :
-    nodeID(_id), serial_(serial)
+    nodeID(_id), serial_(serial), motorJ(nullptr)
 {
+    try {
+        motorJ = new CtrlStepMotor(damiao::DM4310_48V, 0x07, 0x17);
+    } catch (const std::exception& e) {
+        std::cerr << "[DummyHand] 电机初始化失败: " << e.what() << std::endl;
+        motorJ = nullptr;
+    }
+}
+
+DummyHand::~DummyHand()
+{
+    if (motorJ != nullptr) {
+        delete motorJ;
+        motorJ = nullptr;
+    }
 }
 
 void DummyHand::SetAngle(float _angle_rad)
 {
-    // 机械手角度控制（弧度）
+    if (motorJ == nullptr) {
+        std::cerr << "[DummyHand::SetAngle] 错误：电机未初始化" << std::endl;
+        return;
+    }
+    if (_angle_rad < minAngle) _angle_rad = minAngle;
+    else if (_angle_rad > maxAngle) _angle_rad = maxAngle;  
+    motorJ->SetPositionWithVelocityLimit(_angle_rad, maxSpeed);
 }
 
-void DummyHand::SetMaxCurrent(float _val)
+void DummyHand::SetmaxSpeed(float _val)
 {
+    // 参数验证
+    if (_val <= 0) {
+        std::cerr << "[DummyHand::SetmaxSpeed] 错误：速度值必须为正数，当前值: " << _val << std::endl;
+        return;
+    }
+    if (_val > 10.0f) {
+        std::cerr << "[DummyHand::SetmaxSpeed] 警告：速度过快 " << _val << " rad/s，已限制为10.0rad/s" << std::endl;
+        _val = 10.0f;
+    }
+    
+    maxSpeed = _val;
 }
 
 void DummyHand::SetEnable(bool _enable)
 {
+    if (motorJ == nullptr) {
+        std::cerr << "[DummyHand::SetEnable] 错误：电机未初始化" << std::endl;
+        return;
+    }
+    motorJ->SetEnable(_enable, damiao::POS_VEL_MODE);
+    isEnabled = _enable;
 }
 
+void DummyHand::CalibrateHomeOffset(){
+    if (motorJ == nullptr) {
+        std::cerr << "[DummyHand::CalibrateHomeOffset] 错误：电机未初始化" << std::endl;
+        return;
+    }
+    motorJ->ApplyPositionAsHome();
+}
 DummyRobot::DummyRobot(std::string port_name, uint32_t baudrate, const std::string& urdf_path)
 {
+    // 初始化所有电机指针为 nullptr
+    for (int i = 0; i < 7; i++) {
+        motorJ[i] = nullptr;
+    }
+    
     this->serial_ = std::make_shared<SerialPort>(port_name, baudrate);
+    
     // 初始化关节电机（限位值使用弧度）
-    motorJ[1] = new CtrlStepMotor(damiao::DM4340_48V, 0x01, 0x11);
-    motorJ[2] = new CtrlStepMotor(damiao::DM4340_48V, 0x02, 0x12);
-    motorJ[3] = new CtrlStepMotor(damiao::DM4340_48V, 0x03, 0x13);
-    motorJ[4] = new CtrlStepMotor(damiao::DM4340_48V, 0x04, 0x14);
-    motorJ[5] = new CtrlStepMotor(damiao::DM4340_48V, 0x05, 0x15);
-    motorJ[6] = new CtrlStepMotor(damiao::DM4340_48V, 0x06, 0x16);
+    try {
+        motorJ[1] = new CtrlStepMotor(damiao::DM4340_48V, 0x01, 0x11);
+        motorJ[2] = new CtrlStepMotor(damiao::DM4340_48V, 0x02, 0x12);
+        motorJ[3] = new CtrlStepMotor(damiao::DM4340_48V, 0x03, 0x13);
+        motorJ[4] = new CtrlStepMotor(damiao::DM4310_48V, 0x04, 0x14);
+        motorJ[5] = new CtrlStepMotor(damiao::DM4310_48V, 0x05, 0x15);
+        motorJ[6] = new CtrlStepMotor(damiao::DM4310_48V, 0x06, 0x16);
+        std::cout << "[DummyRobot] 所有关节电机初始化成功" << std::endl;
+    } catch (const std::exception& e) {
+        std::cerr << "[DummyRobot] 电机初始化失败: " << e.what() << std::endl;
+    }
+    
     hand = new DummyHand(serial_, 7);
 
     // 初始化Pinocchio运动学
@@ -51,10 +106,21 @@ DummyRobot::DummyRobot(std::string port_name, uint32_t baudrate, const std::stri
 
 DummyRobot::~DummyRobot()
 {
-    for (int j = 0; j <= 6; j++)
-        delete motorJ[j];
-    delete hand;
-    delete kinematics;
+    // 删除关节电机（注意：motorJ[0] 未初始化，跳过）
+    for (int j = 1; j <= 6; j++) {
+        if (motorJ[j] != nullptr) {
+            delete motorJ[j];
+            motorJ[j] = nullptr;
+        }
+    }
+    if (hand != nullptr) {
+        delete hand;
+        hand = nullptr;
+    }
+    if (kinematics != nullptr) {
+        delete kinematics;
+        kinematics = nullptr;
+    }
 }
 
 void DummyRobot::Init()

@@ -2,7 +2,7 @@
 #define REF_STM32F4_FW_DUMMY_ROBOT_H
 
 #include "ctrl_step/ctrl_step.h"
-#include "DmKinematics.h"
+#include "algorithms/kinematic/DmKinematics.h"
 #include <string>
 #include <cmath>
 #include "src/u2can/SerialPort.h"
@@ -17,16 +17,21 @@ class DummyHand
 {
 public:
     uint8_t nodeID = 7;
-    float maxCurrent = 0.7;
+    float maxSpeed = 0.7;
 
-    DummyHand(SerialPort::SharedPtr serial = nullptr, uint8_t _id = 0);
+    DummyHand(SerialPort::SharedPtr serial = nullptr, uint8_t _id = 7);
+    ~DummyHand();
     void SetAngle(float _angle_rad);  // 弧度
-    void SetMaxCurrent(float _val);
+    void SetmaxSpeed(float _val);
     void SetEnable(bool _enable);
+    bool isrEnable() const { return isEnabled; }
+    void CalibrateHomeOffset();
 private:
-    SerialPort::SharedPtr serial_;
     float minAngle = 0;    // 弧度
     float maxAngle = 0.785398f;  // 45度 = π/4 弧度
+    bool isEnabled = false;
+    SerialPort::SharedPtr serial_;
+    CtrlStepMotor* motorJ = nullptr;
 };
 
 class DummyRobot
@@ -112,11 +117,12 @@ public:
     bool IsMoving();
     bool IsEnabled();
     void GetOffsets();
-
+    
     Joint6D_t GetCurrentJoints() const { return currentJoints; }
     Joint6D_t GetTargetJoints() const { return targetJoints; }
     Pose6D_t GetCurrentPose() const { return currentPose; }
     int GetDof() const { return dof; }
+    DummyHand* hand = nullptr;
 
 private:
     SerialPort::SharedPtr serial_;
@@ -136,7 +142,6 @@ private:
     float jointSpeedRatio = 1.0f;
     
     CtrlStepMotor* motorJ[7] = {nullptr};
-    DummyHand* hand = nullptr;
     
     void MoveJointsWithSpeed(const Joint6D_t& joints_rad, const Joint6D_t& speeds_rad_per_sec);
     float AbsMaxOf6(const Joint6D_t& joints, uint8_t& index) const;

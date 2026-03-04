@@ -7,6 +7,8 @@
 #include <pinocchio/math/rpy.hpp>
 #include <Eigen/Dense>
 #include <string>
+#include <pinocchio/algorithm/rnea.hpp>   // 逆动力学
+#include <pinocchio/algorithm/crba.hpp>   // 质量矩阵（可选）
 
 class DmKinematics {
 public:
@@ -52,6 +54,12 @@ public:
         lower = model.lowerPositionLimit;
         upper = model.upperPositionLimit;
     }
+    /**
+     * @brief 计算当前关节角度下的重力补偿力矩（广义力）
+     * @param q 关节角度（弧度），维度 nq
+     * @return Eigen::VectorXd 重力矩（N·m），维度 nv（通常 nv == nq）
+     */
+    Eigen::VectorXd computeGravityTorque(const Eigen::VectorXd& q);
 
 private:
     pinocchio::Model model;

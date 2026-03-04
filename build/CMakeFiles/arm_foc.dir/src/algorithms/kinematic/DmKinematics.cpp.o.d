@@ -2091,4 +2091,10 @@ CMakeFiles/arm_foc.dir/src/algorithms/kinematic/DmKinematics.cpp.o: \
  /usr/local/include/pinocchio/algorithm/jacobian.txx \
  /usr/local/include/pinocchio/algorithm/frames.txx \
  /usr/local/include/pinocchio/math/rpy.hpp \
- /usr/local/include/pinocchio/math/rpy.hxx
+ /usr/local/include/pinocchio/math/rpy.hxx \
+ /usr/local/include/pinocchio/algorithm/rnea.hpp \
+ /usr/local/include/pinocchio/algorithm/rnea.hxx \
+ /usr/local/include/pinocchio/algorithm/rnea.txx \
+ /usr/local/include/pinocchio/algorithm/crba.hpp \
+ /usr/local/include/pinocchio/algorithm/crba.hxx \
+ /usr/local/include/pinocchio/algorithm/crba.txx

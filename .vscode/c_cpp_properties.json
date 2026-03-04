@@ -4,11 +4,16 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "src/**",
+                "${workspaceFolder}/src/**",
                 "/usr/include/**",
-                "src/u2can/**"
+                "/usr/include/eigen3",
+                "/usr/local/include",
+                "/usr/local/include/pinocchio"
             ],
-            "defines": [],
+            "defines": [
+                "PINOCCHIO_WITH_URDFDOM",
+                "PINOCCHIO_ENABLE_TEMPLATE_INSTANTIATION"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c17",
             "cppStandard": "gnu++17",

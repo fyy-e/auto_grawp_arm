@@ -69,6 +69,7 @@ void CtrlStepMotor::SetPositionSetPoint(float _val)
     if (_val > limit_param.Q_MAX) _val = limit_param.Q_MAX;
     if (_val < -limit_param.Q_MAX) _val = -limit_param.Q_MAX;
     
+    target_pos = _val;
     mit_param.q = _val;
     switch (cur_control_mode)
     {
@@ -95,6 +96,7 @@ void CtrlStepMotor::SetPositionWithVelocityLimit(float _pos, float _vel)
     if (_pos > limit_param.Q_MAX) _pos = limit_param.Q_MAX;
     if (_pos < -limit_param.Q_MAX) _pos = -limit_param.Q_MAX;
     std::cout << "\n速度限制最大值： "<< limit_param.Q_MAX << std::endl;
+    target_pos = _pos;
     mit_param.q =_pos;
     mit_param.dq = _vel;
     switch (cur_control_mode)
@@ -172,4 +174,34 @@ void CtrlStepMotor::UpdateAngle() {
 void CtrlStepMotor::UpdateAngleCallback(float _pos, bool _isFinished)
 {
     state = _isFinished ? FINISH : RUNNING;
+}
+
+void CtrlStepMotor::setPositionVelocityTorque(float pos, float vel, float tau) {
+    state = RUNNING;
+
+    // 限位检查（位置、速度、力矩）
+    if (pos > limit_param.Q_MAX)  pos = limit_param.Q_MAX;
+    if (pos < -limit_param.Q_MAX) pos = -limit_param.Q_MAX;
+    if (vel > limit_param.DQ_MAX) vel = limit_param.DQ_MAX;
+    if (vel < -limit_param.DQ_MAX) vel = -limit_param.DQ_MAX;
+    if (tau > limit_param.TAU_MAX) tau = limit_param.TAU_MAX;
+    if (tau < -limit_param.TAU_MAX) tau = -limit_param.TAU_MAX;
+
+    target_pos = pos;
+    mit_param.q = pos;
+    mit_param.dq = vel;
+    mit_param.tau = tau;   // 存入前馈力矩
+
+    // 确保当前控制模式为 MIT
+    if (cur_control_mode != damiao::MIT_MODE) {
+        std::cerr << "警告: 电机 " << Slave_id << " 当前模式非 MIT，力矩前馈将失效" << std::endl;
+    }
+
+    // 发送指令（dm.control_mit 内部会归一化）
+    dm.control_mit(this->motor,
+                   mit_param.kp,
+                   mit_param.kd,
+                   mit_param.q,
+                   mit_param.dq,
+                   mit_param.tau);
 }

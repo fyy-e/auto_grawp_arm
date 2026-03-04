@@ -56,6 +56,13 @@ public:
 
     void UpdateAngle();
     void UpdateAngleCallback(float _pos, bool _isFinished);
+        /**
+     * @brief 设置目标位置、速度及前馈力矩（MIT 模式）
+     * @param pos   目标位置（弧度，已扣除零偏）
+     * @param vel   目标速度（弧度/秒）
+     * @param tau   前馈力矩（N·m）
+     */
+    void setPositionVelocityTorque(float pos, float vel, float tau);
 private:
     damiao::Motor motor;
 };

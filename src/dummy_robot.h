@@ -76,10 +76,10 @@ public:
 
     // 默认参数（弧度制）
     const Joint6D_t INIT_POSE = {0.0f, 0.0, 0.0, 0.0f, 0.0f, 0.0f};  // 90° = π/2
-    const Joint6D_t REST_POSE = {0.0f, 0.785f, 0.785f, 0.0f, 0.0f, 0.0f};  // 90° = π/2
+    const Joint6D_t REST_POSE = {0.0f, 0.785f, 0.785f, -0.785f, 0.0f, 0.0f};  // 90° = π/2
     
     // 速度：rad/s
-    const float DEFAULT_JOINT_SPEED = 10.0f;  // 30°/s
+    const float DEFAULT_JOINT_SPEED = 0.785f;  // 30°/s
     
     // 加速度：rad/s²
     const Joint6D_t DEFAULT_JOINT_ACCELERATION_BASES = {2.618f, 1.745f, 3.490f, 3.490f, 3.490f, 3.490f};

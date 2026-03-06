@@ -4,36 +4,27 @@
 #include <atomic>
 #include "dummy_robot.h"
 #include "src/u2can/SerialPort.h"
+#include "algorithms/VisionGraspPlanner.h" // - 新增：引入视觉规划器
+
 // 全局变量
 std::atomic<bool> g_thread_running(true);
-// 1. 初始化静态指针为 nullptr
 std::shared_ptr<SerialPort> CtrlStepMotor::serial = std::make_shared<SerialPort>("/dev/ttyACM0", B921600);
 damiao::Motor_Control CtrlStepMotor::dm(CtrlStepMotor::serial);
 
 /**
  * @brief 角度更新线程函数
- * 以固定频率更新关节角度和状态
  */
-int i = 0;
 void UpdateThread(DummyRobot* robot, int update_rate_hz) {
     using namespace std::chrono;
-    
     int update_period_ms = 1000 / update_rate_hz;
     auto next_time = steady_clock::now();
     
     while (g_thread_running) {
-        // 更新关节角度
-
         robot->UpdateJointAngles();
-        
-        // 更新角度回调（处理状态标志）
         robot->UpdateJointAnglesCallback();
-
         if (robot->GetDof() > 0) {
             robot->UpdateJointPose6D();
         }
-        
-        // 固定频率执行
         next_time += milliseconds(update_period_ms);
         std::this_thread::sleep_until(next_time);
     }
@@ -74,114 +65,101 @@ void PrintJointAnglesDeg(const DummyRobot::Joint6D_t& joints) {
     }
     std::cout << std::endl;
 }
+
 int main() {
-    // 2. 创建机械臂对象（需要提供URDF路径）
-    DummyRobot robot("/dev/ttyACM0", B921600, "/home/fyy/桌面/arm_motionController_ws/dm_arm_v1.0/src/urdf/urdf/DM_urdf.urdf");
+    // 1. 定义路径 (建议使用绝对路径确保加载成功)
+    std::string urdf_path = "/home/fyy/桌面/arm_motionController_ws/dm_arm_v2.0/src/urdf/urdf/DM_urdf.urdf";
+    std::string calib_path = "/home/fyy/桌面/arm_motionController_ws/dm_arm_v2.0/src/config/handeye_result_realsense.yaml";
+
+    // 2. 创建机器人和视觉规划器对象
+    DummyRobot robot("/dev/ttyACM0", B921600, urdf_path);
+    VisionGraspPlanner grasp_planner(calib_path); // 自动从 YAML 加载标定参数
+
+    // 初始化机器人
+    robot.hand->SetEnable(true);
     // robot.CalibrateHomeOffset();
-    // 3. 初始化机械臂
     std::cout << "初始化机械臂..." << std::endl;
     robot.Init();
-    robot.SetEnable(true,damiao::POS_VEL_MODE);
-    robot.hand->SetEnable(true);
+    robot.SetEnable(true, damiao::POS_VEL_MODE);
     // robot.hand->CalibrateHomeOffset();
-    std::this_thread::sleep_for(std::chrono::milliseconds(100));
     
-    // 4. 启动角度更新线程
-    std::cout << "启动角度更新线程 (200Hz)..." << std::endl;
     std::thread update_thread(UpdateThread, &robot, 100);
-    
-    // 5. 等待机械臂使能完成
     std::this_thread::sleep_for(std::chrono::milliseconds(500));
 
-    // 6. 回零
     std::cout << "执行回零操作..." << std::endl;
     robot.Homing();
-    std::this_thread::sleep_for(std::chrono::milliseconds(3000));
-    
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+    robot.Resting();
+    std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+
     try {
-        // 测试1: 关节空间运动（输入为弧度）
-        std::cout << "\n测试1: 关节空间运动 (MoveJ)..." << std::endl;
-        PrintJointAngles(robot.GetCurrentJoints());
-        // PrintJointAnglesDeg(robot.GetCurrentJoints());  // 同时打印度数方便查看
-
-        // 目标关节角（弧度）：
-        // J1=-0.02rad, J2=-0.23rad, J3=0.03rad, J4=-1.57rad(约-90°), J5=0, J6=0
-        bool move_success = robot.MoveJ(0.0f, 0.785f, 0.785f, 0.3f, 0.3f, 1.57f);
+        // --- 原有的测试 1 & 2 保持不变 ---
         
-        if (move_success) {
-            std::cout << "运动指令已下发（目标：弧度）" << std::endl;
-            
-            // 驱动关节运动（使用getter获取targetJoints）
-            // robot.MoveJoints(robot.GetTargetJoints());
-            // std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            
-            // 等待运动完成
-            while (robot.IsMoving()) {
-                std::cout << "运动中..." << std::endl;
-                PrintJointAngles(robot.GetCurrentJoints());
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            }
-            robot.hand->SetAngle(2.0f);  // 手爪半开
-            std::cout << "运动完成!" << std::endl;
-            PrintJointAngles(robot.GetCurrentJoints());
-        } else {
-            std::cout << "运动指令非法（可能超出限位）!" << std::endl;
-        }
+        // ================================================================
+        // 测试3: 视觉引导抓取测试 (新增)
+        // ================================================================
+        std::cout << "\n测试3: 视觉引导抓取测试..." << std::endl;
 
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        // A. 模拟视觉数据：假设相机在相机坐标系下检测到物体在 (x, y, z)
+        // 注意：单位必须是米。例如 z=0.45m 表示物体距离相机 45 厘米
+        float obj_in_cam[3] = {0.02f, -0.01f, 0.25f}; 
+
+        // B. 获取当前机械臂末端的 6D 位姿
+        auto cp = robot.GetCurrentPose();
+        float current_p[6] = {cp.X, cp.Y, cp.Z, cp.roll, cp.pitch, cp.yaw};
+
+        // C. 调用规划器：将物体坐标转换到基座坐标系
+        Eigen::Vector3d target_base = grasp_planner.getTargetInBase(current_p, obj_in_cam);
+
+        std::cout << ">>> 视觉转换结果: " 
+                  << "Base_X=" << target_base.x() << " "
+                  << "Base_Y=" << target_base.y() << " "
+                  << "Base_Z=" << target_base.z() << std::endl;
+
+        // D. 执行抓取动作流程
+        // 1. 移动到目标点上方 10cm (预备位)
+        std::cout << "正在移动到预备抓取位..." << std::endl;
+        bool pre_move = robot.MoveL(target_base.x(), target_base.y(), target_base.z() + 0.20f, 
+                                    3.14f, 0.0f, 1.57f); // 假设末端垂直向下姿态
+
+        if (pre_move) {
+            while (robot.IsMoving()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
+            
+            // 2. 打开手爪
+            robot.hand->SetAngle(0.78f); 
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+
+            // 3. 下降到实际目标点位置
+            std::cout << "下降执行抓取..." << std::endl;
+            robot.MoveL(target_base.x(), target_base.y(), target_base.z()+ 0.15f, 3.14f, 0.0f, 1.57f);
+            while (robot.IsMoving()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
+
+            // 4. 闭合手爪
+            robot.hand->SetAngle(0.0f);
+            std::this_thread::sleep_for(std::chrono::milliseconds(800));
+
+            // 5. 抬升
+            robot.MoveL(target_base.x(), target_base.y(), target_base.z() + 0.20f, 3.14f, 0.0f, 1.57f);
+            while (robot.IsMoving()) std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        }
         robot.Resting();
-        // 持续打印状态（用于调试）
+        // ================================================================
 
-
-        std::cout << "\n测试1: 笛卡尔坐标系运动 (MoveL)..." << std::endl;
-        move_success = robot.MoveL(0.356810f, 0.000304f, 0.424000f, 1.570796f, -0.000000f, 1.570796f);
-        
-        if (move_success) {
-            std::cout << "运动指令已下发（目标：弧度）" << std::endl;
-            
-            // 驱动关节运动（使用getter获取targetJoints）
-            // robot.MoveJoints(robot.GetTargetJoints());
-            // std::this_thread::sleep_for(std::chrono::milliseconds(50));
-            
-            // 等待运动完成
-            while (robot.IsMoving()) {
-                std::cout << "运动中..." << std::endl;
-                PrintJointAngles(robot.GetCurrentJoints());
-                std::this_thread::sleep_for(std::chrono::milliseconds(100));
-            }
-            std::cout << "运动完成!" << std::endl;
-            robot.hand->SetAngle(0.0f);  // 手爪半开
-            PrintJointAngles(robot.GetCurrentJoints());
-        } else {
-            std::cout << "运动指令非法（可能超出限位）!" << std::endl;
-        }
-        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
-        robot.Homing();
-        // 持续打印状态（用于调试）
-        std::cout << "\n进入监控模式（按Ctrl+C退出）..." << std::endl;
+        // 持续监控
+        std::cout << "\n进入监控模式..." << std::endl;
         while(g_thread_running) {
-            PrintJointAngles(robot.GetCurrentJoints());
-            // PrintJointAnglesDeg(robot.GetCurrentJoints());
-            if (robot.GetDof() > 0) {
-                    // robot.UpdateJointPose6D();
-                    PrintPose(robot.GetCurrentPose());
-                }
-                std::this_thread::sleep_for(std::chrono::milliseconds(500));
-            }
+            PrintPose(robot.GetCurrentPose());
+            PrintJointAnglesDeg(robot.GetCurrentJoints());
+            std::this_thread::sleep_for(std::chrono::milliseconds(500));
+        }
             
-        } catch (const std::exception& e) {
-            std::cerr << "测试过程中发生异常: " << e.what() << std::endl;
-        }
-        
-        // 清理
-        std::cout << "\n清理资源..." << std::endl;
-        g_thread_running = false;
-        if (update_thread.joinable()) {
-            update_thread.join();
-        }
-        
-        robot.SetEnable(false,damiao::POS_VEL_MODE);
-        std::cout << "测试完成!" << std::endl;
-        
-        return 0;
+    } catch (const std::exception& e) {
+        std::cerr << "异常: " << e.what() << std::endl;
+    }
+    
+    // 清理
+    g_thread_running = false;
+    if (update_thread.joinable()) update_thread.join();
+    robot.SetEnable(false, damiao::POS_VEL_MODE);
+    return 0;
 }

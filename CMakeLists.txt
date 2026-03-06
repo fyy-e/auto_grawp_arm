@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 find_package(Threads REQUIRED)
 find_package(Eigen3 REQUIRED)
 find_package(PkgConfig REQUIRED)  # 用于查找 pinocchio
+find_package(yaml-cpp REQUIRED)
 
 # 使用 pkg-config 查找 pinocchio（如果已安装）
 pkg_check_modules(PINOCCHIO REQUIRED pinocchio)
@@ -23,13 +24,14 @@ include_directories(.)
 # 收集所有源文件
 file(GLOB_RECURSE SRC_FILES
     "src/*.cpp"
+    "src/algorithms/*.cpp"           # 新增：确保能搜到 VisionGraspPlanner.cpp
     "src/algorithms/kinematic/*.cpp"
     "src/ctrl_step/*.cpp"
 )
 
-# 收集所有头文件
 file(GLOB_RECURSE HEADER_FILES
     "src/*.h"
+    "src/algorithms/*.h"           # 新增：确保能搜到 VisionGraspPlanner.h
     "src/algorithms/kinematic/*.h"
     "src/ctrl_step/*.h"
 )
@@ -47,10 +49,11 @@ add_executable(${PROJECT_NAME}
 # 设置目标属性 - 关键修改：添加 Eigen3 和 Pinocchio 路径
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithms           # 新增：允许直接引用 algorithms/xxx.h
     ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithms/kinematic
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ctrl_step
-    ${EIGEN3_INCLUDE_DIR}              # Eigen3 头文件
-    ${PINOCCHIO_INCLUDE_DIRS}          # Pinocchio 头文件
+    ${EIGEN3_INCLUDE_DIR}
+    ${PINOCCHIO_INCLUDE_DIRS}
 )
 
 # 定义 URDF 路径宏（方便代码中引用）
@@ -64,6 +67,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
     Eigen3::Eigen                      # 显式链接 Eigen
     ${PINOCCHIO_LIBRARIES}             # Pinocchio 库
     m                                  # 数学库
+    yaml-cpp                            # YAML 库
 )
 
 # 设置链接选项（如果需要）

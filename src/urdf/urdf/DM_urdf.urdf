@@ -51,7 +51,7 @@
     <origin xyz="1.96368150957441E-05 0.000304330674462181 0.0562500000000002" rpy="0 0 0" />
     <parent link="base_link" />
     <child link="link_1" />
-    <axis xyz="0 0 -1" />
+    <axis xyz="0 0 1" />
     <limit lower="-3.14159" upper="3.14159" effort="1" velocity="1"/>
   </joint>
   <link name="link_2">
@@ -138,7 +138,7 @@
     <origin xyz="0.244000131517736 0.0600001320267543 -0.00464999999999638" rpy="0 0 0" />
     <parent link="link_3" />
     <child link="link_4" />
-    <axis xyz="0 0 -1" />
+    <axis xyz="0 0 1" />
     <limit lower="-3.14159" upper="3.14159" effort="1" velocity="1"/>
   </joint>
   <link name="link_5">
@@ -167,7 +167,7 @@
     <origin xyz="0.061999999999976 0.0436000000000246 -0.0269999999999984" rpy="1.5707963267949 -1.5707963267949 0" />
     <parent link="link_4" />
     <child link="link_5" />
-    <axis xyz="0 0 -1" />
+    <axis xyz="0 0 1" />
     <limit lower="-3.14159" upper="3.14159" effort="1" velocity="1"/>
   </joint>
   <link name="link_6">

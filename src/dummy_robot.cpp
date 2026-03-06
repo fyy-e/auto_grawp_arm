@@ -54,6 +54,7 @@ void DummyHand::SetEnable(bool _enable)
         return;
     }
     motorJ->SetEnable(_enable, damiao::POS_VEL_MODE);
+    std::cerr << "[DummyHand::SetEnable] 成功：电机已上电" << std::endl;
     isEnabled = _enable;
 }
 

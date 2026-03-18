@@ -1,0 +1,24 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceFolder}/**",
+                "${workspaceFolder}/src/**",
+                "/usr/include/**",
+                "/usr/include/eigen3",
+                "/usr/local/include",
+                "/usr/local/include/pinocchio"
+            ],
+            "defines": [
+                "PINOCCHIO_WITH_URDFDOM",
+                "PINOCCHIO_ENABLE_TEMPLATE_INSTANTIATION"
+            ],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c17",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}

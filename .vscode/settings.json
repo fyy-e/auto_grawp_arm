@@ -1,0 +1,30 @@
+{
+    "python.autoComplete.extraPaths": [
+        "/home/fyy/unitree_go2_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_tutorial_py/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_driver_py/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_teleop_ctrl_keyboard/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_twist_bridge_py/lib/python3.10/site-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ],
+    "python.analysis.extraPaths": [
+        "/home/fyy/unitree_go2_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_tutorial_py/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_driver_py/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_teleop_ctrl_keyboard/lib/python3.10/site-packages",
+        "/home/fyy/unitree_go2_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/home/fyy/unitree_go2_ws/install/go2_twist_bridge_py/lib/python3.10/site-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_hg/local/lib/python3.10/dist-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_go/local/lib/python3.10/dist-packages",
+        "/home/fyy/go2_ros2_ws/unitree_ros2/cyclonedds_ws/install/unitree_api/local/lib/python3.10/dist-packages",
+        "/opt/ros/humble/lib/python3.10/site-packages",
+        "/opt/ros/humble/local/lib/python3.10/dist-packages"
+    ]
+}

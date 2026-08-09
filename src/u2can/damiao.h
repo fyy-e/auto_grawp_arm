@@ -385,8 +385,9 @@ namespace damiao
             uint8_t can_low = motor.GetSlaveId() & 0xff; // id low 8 bit
             uint8_t can_high = (motor.GetSlaveId() >> 8) & 0xff; //id high 8 bit
             std::array<uint8_t, 8> data_buf = {can_low,can_high, 0xCC, 0x00, 0x00, 0x00, 0x00, 0x00};
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
         /*
@@ -449,8 +450,9 @@ namespace damiao
             data_buf[6] = ((kd_uint & 0xf) << 4) | ((tau_uint >> 8) & 0xf);
             data_buf[7] = tau_uint & 0xff;
 
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -471,8 +473,9 @@ namespace damiao
             memcpy(data_buf.data(), &pos, sizeof(float));
             memcpy(data_buf.data() + 4, &vel, sizeof(float));
             id += POS_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send(reinterpret_cast<uint8_t*>(&send_data), sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -491,8 +494,9 @@ namespace damiao
             std::array<uint8_t, 8> data_buf = {0};
             memcpy(data_buf.data(), &vel, sizeof(float));
             id=id+SPEED_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -515,8 +519,9 @@ namespace damiao
             memcpy(data_buf.data() + 4, &vel, sizeof(uint16_t));
             memcpy(data_buf.data() + 6, &i, sizeof(uint16_t));
             id=id+POSI_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -538,8 +543,9 @@ namespace damiao
             memcpy(data_buf.data(), &pos, sizeof(float));
             memcpy(data_buf.data() + 4, &vel, sizeof(float));
             id += POS_CSP_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send(reinterpret_cast<uint8_t*>(&send_data), sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -558,8 +564,9 @@ namespace damiao
             std::array<uint8_t, 8> data_buf = {0};
             memcpy(data_buf.data(), &vel, sizeof(float));
             id=id+SPEED_CSP_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -578,8 +585,9 @@ namespace damiao
             std::array<uint8_t, 8> data_buf = {0};
             memcpy(data_buf.data(), &tor, sizeof(float));
             id=id+TOR_CSP_MODE;
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             this->receive();
         }
 
@@ -708,8 +716,11 @@ namespace damiao
             uint8_t can_low = id & 0xff;
             uint8_t can_high = (id >> 8) & 0xff;
             std::array<uint8_t, 8> data_buf{can_low, can_high, 0x33, RID, 0x00, 0x00, 0x00, 0x00};
-            send_data.modify(0x7FF, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            // send_data.modify(0x7FF, data_buf.data());
+            // serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(0x7FF, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             for(uint8_t i =0;i<max_retries;i++)
             {
                 usleep(retry_interval);
@@ -816,8 +827,11 @@ namespace damiao
             uint8_t id_low = id & 0xff;
             uint8_t id_high = (id >> 8) & 0xff;
             std::array<uint8_t, 8> data_buf{id_low, id_high, 0xAA, 0x01, 0x00, 0x00, 0x00, 0x00};
-            send_data.modify(0x7FF, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            // send_data.modify(0x7FF, data_buf.data());
+            // serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(0x7FF, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
             usleep(100000);//100ms wait for save
         }
 
@@ -847,8 +861,9 @@ namespace damiao
         void control_cmd(Motor_id id , uint8_t cmd)
         {
             std::array<uint8_t, 8> data_buf = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, cmd};
-            send_data.modify(id, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(id, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
         }
 
         void write_motor_param(Motor &DM_Motor,uint8_t RID,const uint8_t data[4])
@@ -861,8 +876,9 @@ namespace damiao
             data_buf[5] = data[1];
             data_buf[6] = data[2];
             data_buf[7] = data[3];
-            send_data.modify(0x7FF, data_buf.data());
-            serial_->send((uint8_t*)&send_data, sizeof(can_send_frame));
+            can_send_frame local_send_data; // 【修改点】改为局部变量
+            local_send_data.modify(0x7FF, data_buf.data());
+            serial_->send((uint8_t*)&local_send_data, sizeof(can_send_frame));
         }
 
         static bool is_in_ranges(int number) {
@@ -891,7 +907,7 @@ namespace damiao
 
         std::unordered_map<Motor_id, Motor*> motors;
         SerialPort::SharedPtr serial_;  //serial port
-        can_send_frame send_data; //send data frame
+        // can_send_frame send_data; //send data frame
         CAN_Receive_Frame receive_data{};//receive data frame
     };
 

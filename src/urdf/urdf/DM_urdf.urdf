@@ -199,4 +199,21 @@
     <axis xyz="0 0 -1" />
     <limit lower="-3.14159" upper="3.14159" effort="1" velocity="1"/>
   </joint>
+  <link name="tool0_tcp">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0" />
+      <geometry>
+        <sphere radius="0.005"/>
+      </geometry>
+      <material name="red">
+        <color rgba="1 0 0 1"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="joint_tcp" type="fixed">
+    <origin xyz="0 0 0.16" rpy="0 0 0" /> 
+    <parent link="link_6" />
+    <child link="tool0_tcp" />
+  </joint>
 </robot>

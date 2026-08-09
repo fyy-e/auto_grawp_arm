@@ -1,0 +1,42 @@
+# 编译产物
+build/
+install/
+log/
+*.o
+*.so
+*.a
+*.bin
+*.elf
+
+# 可执行文件
+build/bin/
+*.exe
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+
+# 模型权重和 USD 大文件
+vision/models/
+*.pth
+*.pt
+*.onnx
+*.weights
+*.usd
+*.usda
+*.usdc
+*.usd*
+src/urdf/berkeley_humanoid_lite/usd/
+
+# 输出/调试文件
+vision/out/
+debug_*.png
+test.txt
+
+# 压缩包
+*.zip
+
+# IDE
+.vscode/
+.idea/

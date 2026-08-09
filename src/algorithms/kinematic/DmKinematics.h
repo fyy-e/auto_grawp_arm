@@ -18,7 +18,7 @@ public:
      * @param ee_frame_name 末端执行器所在的 frame 名称（默认为 "link_6"）
      */
     DmKinematics(const std::string& urdf_path, 
-                 const std::string& ee_frame_name = "link_6");
+                 const std::string& ee_frame_name = "tool0_tcp");
 
     /**
      * @brief 正向运动学

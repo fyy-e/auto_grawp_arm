@@ -5,8 +5,8 @@
 #include "algorithms/kinematic/DmKinematics.h"
 #include <string>
 #include <cmath>
-#include "src/u2can/SerialPort.h"
-#include "src/u2can/damiao.h"
+#include "u2can/SerialPort.h"
+#include "u2can/damiao.h"
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -17,7 +17,7 @@ class DummyHand
 {
 public:
     uint8_t nodeID = 7;
-    float maxSpeed = 0.7;
+    float maxSpeed = 1.0f; // rad/s
 
     DummyHand(SerialPort::SharedPtr serial = nullptr, uint8_t _id = 7);
     ~DummyHand();
@@ -26,9 +26,17 @@ public:
     void SetEnable(bool _enable);
     bool isrEnable() const { return isEnabled; }
     void CalibrateHomeOffset();
+    // void CalibrateHomeOffset();
+
+    // ----> 新增的力矩抓取方法 <----
+    // @param target_torque 目标夹紧力矩（需根据闭合方向给定正负号，如 -0.5f）
+    // @param min_angle 最小闭合角度防撞限位
+    // @param close_speed 闭合速度
+    bool GraspWithTorque(float target_torque, float min_angle, float close_speed = 0.1f);
+    void ResetImpedance(); // 恢复正常的位置刚度
 private:
     float minAngle = 0;    // 弧度
-    float maxAngle = 0.785398f;  // 45度 = π/4 弧度
+    float maxAngle = 8.0f;  // 45度 = π/4 弧度
     bool isEnabled = false;
     SerialPort::SharedPtr serial_;
     CtrlStepMotor* motorJ = nullptr;
@@ -117,7 +125,7 @@ public:
     bool IsMoving();
     bool IsEnabled();
     void GetOffsets();
-    
+    bool WaitMoveDone(int extra_timeout_ms = 1000);
     Joint6D_t GetCurrentJoints() const { return currentJoints; }
     Joint6D_t GetTargetJoints() const { return targetJoints; }
     Pose6D_t GetCurrentPose() const { return currentPose; }
@@ -145,6 +153,7 @@ private:
     
     void MoveJointsWithSpeed(const Joint6D_t& joints_rad, const Joint6D_t& speeds_rad_per_sec);
     float AbsMaxOf6(const Joint6D_t& joints, uint8_t& index) const;
+    float GetMaxJointError();
 };
 
 #endif

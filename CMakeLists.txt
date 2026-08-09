@@ -1,116 +1,76 @@
 cmake_minimum_required(VERSION 3.10)
-
 project(arm_foc)
 
+set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
-# 查找必要的库
+# --- 查找依赖 ---
+find_package(rclcpp REQUIRED)
+find_package(action_msgs REQUIRED)
 find_package(Threads REQUIRED)
 find_package(Eigen3 REQUIRED)
-find_package(PkgConfig REQUIRED)  # 用于查找 pinocchio
+find_package(OpenCV REQUIRED)
 find_package(yaml-cpp REQUIRED)
+find_package(realsense2 REQUIRED)
+# 1. 查找包时，添加必要的组件（通常建议加上 rosidl_default_runtime）
+find_package(action_msgs REQUIRED)
+find_package(rclcpp REQUIRED)
 
-# 使用 pkg-config 查找 pinocchio（如果已安装）
-pkg_check_modules(PINOCCHIO REQUIRED pinocchio)
+# Pinocchio 手动路径设置 (保持你原有的)
+set(PINOCCHIO_INCLUDE_DIR "/opt/ros/humble/include")
+set(PINOCCHIO_LIB_DIR "/opt/ros/humble/lib/aarch64-linux-gnu")
 
-# 包含目录
-include_directories(.)
+find_library(PINOCCHIO_DEFAULT_LIB NAMES pinocchio_default PATHS ${PINOCCHIO_LIB_DIR} REQUIRED NO_DEFAULT_PATH)
+find_library(PINOCCHIO_PARSERS_LIB NAMES pinocchio_parsers PATHS ${PINOCCHIO_LIB_DIR} REQUIRED NO_DEFAULT_PATH)
 
-# 子目录（如果有需要可以添加）
-# add_subdirectory(algorithms)
-# add_subdirectory(ctrl_step)
-
-# 收集所有源文件
+# --- 文件搜索 ---
 file(GLOB_RECURSE SRC_FILES
     "src/*.cpp"
-    "src/algorithms/*.cpp"           # 新增：确保能搜到 VisionGraspPlanner.cpp
-    "src/algorithms/kinematic/*.cpp"
+    "src/algorithms/*.cpp"
     "src/ctrl_step/*.cpp"
 )
 
-file(GLOB_RECURSE HEADER_FILES
-    "src/*.h"
-    "src/algorithms/*.h"           # 新增：确保能搜到 VisionGraspPlanner.h
-    "src/algorithms/kinematic/*.h"
-    "src/ctrl_step/*.h"
-)
+# --- 可执行文件 ---
+# 只要 SRC_FILES 变量里包含了你的主程序文件，这样写就足够了
+add_executable(${PROJECT_NAME} ${SRC_FILES})
 
-# 显示找到的文件
-message(STATUS "Found source files: ${SRC_FILES}")
-message(STATUS "Found header files: ${HEADER_FILES}")
-
-# 创建可执行文件
-add_executable(${PROJECT_NAME}
-    ${SRC_FILES}
-    ${HEADER_FILES}
-)
-
-# 设置目标属性 - 关键修改：添加 Eigen3 和 Pinocchio 路径
+# --- 包含目录 ---
 target_include_directories(${PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/src
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithms           # 新增：允许直接引用 algorithms/xxx.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithms/kinematic
+    ${CMAKE_CURRENT_SOURCE_DIR}/src/algorithms
     ${CMAKE_CURRENT_SOURCE_DIR}/src/ctrl_step
     ${EIGEN3_INCLUDE_DIR}
-    ${PINOCCHIO_INCLUDE_DIRS}
+    ${PINOCCHIO_INCLUDE_DIR}
 )
 
-# 定义 URDF 路径宏（方便代码中引用）
-target_compile_definitions(${PROJECT_NAME} PRIVATE
-    URDF_PATH="${CMAKE_CURRENT_SOURCE_DIR}/src/urdf/"
-)
-
-# 链接必要的库 - 关键修改：添加 Pinocchio
+# --- 链接库 ---
 target_link_libraries(${PROJECT_NAME} PRIVATE
+    rclcpp::rclcpp
+    # 修改这里：使用具体的 C++ 接口
+    action_msgs::action_msgs__rosidl_typesupport_cpp
     Threads::Threads
-    Eigen3::Eigen                      # 显式链接 Eigen
-    ${PINOCCHIO_LIBRARIES}             # Pinocchio 库
-    m                                  # 数学库
-    yaml-cpp                            # YAML 库
+    Eigen3::Eigen
+    yaml-cpp
+    realsense2::realsense2
+    ${OpenCV_LIBS}
+    ${PINOCCHIO_DEFAULT_LIB}
+    ${PINOCCHIO_PARSERS_LIB}
+    m
 )
 
-# 设置链接选项（如果需要）
-target_link_options(${PROJECT_NAME} PRIVATE
-    ${PINOCCHIO_LDFLAGS_OTHER}
-)
-
-# 设置输出目录
+# --- 运行时路径与安装设置 ---
 set_target_properties(${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-    LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-    ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
+    BUILD_RPATH "${PINOCCHIO_LIB_DIR}"
 )
 
-# 添加安装规则（可选）
-install(TARGETS ${PROJECT_NAME}
-    RUNTIME DESTINATION bin
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-)
-
-# 添加测试（可选）
-enable_testing()
-
-# 如果使用Qt（可选，如果需要GUI）
-# find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
-# target_link_libraries(${PROJECT_NAME} PRIVATE Qt5::Core Qt5::Widgets)
-
-# 添加编译警告选项
 if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
     target_compile_options(${PROJECT_NAME} PRIVATE
         -Wall
         -Wextra
         -Wno-unused-parameter
         -Wno-deprecated-declarations
-        ${PINOCCHIO_CFLAGS_OTHER}      # Pinocchio 编译选项
-    )
-endif()
-
-# 如果使用MSVC
-if(MSVC)
-    target_compile_options(${PROJECT_NAME} PRIVATE
-        /W4
-        /WX
+        -Wno-psabi  # <--- 添加这一行，专门用来关闭这种 ABI 变动的提示
     )
 endif()

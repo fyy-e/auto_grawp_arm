@@ -1,6 +1,6 @@
 #ifndef DUMMY_CORE_FW_CTRL_STEP_HPP
 #define DUMMY_CORE_FW_CTRL_STEP_HPP
-#include "src/u2can/damiao.h"
+#include "u2can/damiao.h"
 #include "unistd.h"
 #include <cmath>
 #define osDelay(ms) usleep((ms)*1000)
@@ -16,11 +16,11 @@ public:
     typedef struct
     {
         /* data */
-        float kp = 0;
-        float kd = 0;
+        float kp = 0.1;
+        float kd = 0.2;
         float q = 0;
         float dq = 0;
-        float tau = 0;
+        float tau = 0.1;
         float i = 0;
 
     }MIT_param;
@@ -62,7 +62,7 @@ public:
      * @param vel   目标速度（弧度/秒）
      * @param tau   前馈力矩（N·m）
      */
-    void setPositionVelocityTorque(float pos, float vel, float tau);
+    void setPositionVelocityTorque(float pos, float vel, float tau,float kp, float kd);
 private:
     damiao::Motor motor;
 };

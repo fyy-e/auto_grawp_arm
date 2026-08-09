@@ -95,7 +95,7 @@ void CtrlStepMotor::SetPositionWithVelocityLimit(float _pos, float _vel)
     // 检查角度限位
     if (_pos > limit_param.Q_MAX) _pos = limit_param.Q_MAX;
     if (_pos < -limit_param.Q_MAX) _pos = -limit_param.Q_MAX;
-    std::cout << "\n速度限制最大值： "<< limit_param.Q_MAX << std::endl;
+    // std::cout << "\n速度限制最大值： "<< limit_param.Q_MAX << std::endl;
     target_pos = _pos;
     mit_param.q =_pos;
     mit_param.dq = _vel;
@@ -106,7 +106,7 @@ void CtrlStepMotor::SetPositionWithVelocityLimit(float _pos, float _vel)
         break;
     case damiao::POS_VEL_MODE:
         dm.control_pos_vel(this->motor,mit_param.q,mit_param.dq);
-        std::cout << "\nmit_param.q： "<< mit_param.q << "mit_param.dq： "<< mit_param.dq << std::endl;
+        // std::cout << "\nmit_param.q： "<< mit_param.q << "mit_param.dq： "<< mit_param.dq << std::endl;
         break;
     case damiao::VEL_MODE:
         /* code */
@@ -161,14 +161,17 @@ void CtrlStepMotor::UpdateAngle() {
     dm.refresh_motor_status(this->motor);
     position = motor.Get_Position();
     velocity = motor.Get_Velocity();
-    // 增加一个物理位置判断
+    tau = motor.Get_tau();
+    
     float error = std::abs(target_pos - position);
-    if (error > 0.01) { // 这里的阈值根据实际情况定
-        state = RUNNING;
-    } else {
+    
+    // 【优化点】放宽位置阈值至 0.02 rad (~1.1度)。
+    // 如果误差在 0.05 rad 以内，并且速度极低（已经卡住/停稳），也视为完成。
+    if (error < 0.02f || (error < 0.05f && std::abs(velocity) < 0.05f)) {
         state = FINISH;
+    } else {
+        state = RUNNING;
     }
-
 }
 
 void CtrlStepMotor::UpdateAngleCallback(float _pos, bool _isFinished)
@@ -176,7 +179,7 @@ void CtrlStepMotor::UpdateAngleCallback(float _pos, bool _isFinished)
     state = _isFinished ? FINISH : RUNNING;
 }
 
-void CtrlStepMotor::setPositionVelocityTorque(float pos, float vel, float tau) {
+void CtrlStepMotor::setPositionVelocityTorque(float pos, float vel, float tau,float kp, float kd) {
     state = RUNNING;
 
     // 限位检查（位置、速度、力矩）
@@ -191,7 +194,8 @@ void CtrlStepMotor::setPositionVelocityTorque(float pos, float vel, float tau) {
     mit_param.q = pos;
     mit_param.dq = vel;
     mit_param.tau = tau;   // 存入前馈力矩
-
+    mit_param.kp = kp;
+    mit_param.kd = kd;
     // 确保当前控制模式为 MIT
     if (cur_control_mode != damiao::MIT_MODE) {
         std::cerr << "警告: 电机 " << Slave_id << " 当前模式非 MIT，力矩前馈将失效" << std::endl;
